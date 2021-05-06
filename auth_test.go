@@ -60,6 +60,7 @@ func TestProvider(t *testing.T) {
 	svc.AddProvider("microsoft", "cid", "csecret")
 	svc.AddProvider("battlenet", "cid", "csecret")
 	svc.AddProvider("patreon", "cid", "csecret")
+	svc.AddProvider("discord", "cid", "csecret")
 	svc.AddProvider("bad", "cid", "csecret")
 
 	c := customHandler{}
@@ -79,7 +80,7 @@ func TestProvider(t *testing.T) {
 	assert.Equal(t, "github", op.Name())
 
 	pp := svc.Providers()
-	assert.Equal(t, 9, len(pp))
+	assert.Equal(t, 10, len(pp))
 
 	ch, err := svc.Provider("telegramBotMySiteCom")
 	assert.NoError(t, err)

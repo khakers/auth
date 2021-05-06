@@ -1,7 +1,7 @@
 # auth - authentication via oauth2, direct and email
 [![Build Status](https://github.com/go-pkgz/auth/workflows/build/badge.svg)](https://github.com/go-pkgz/auth/actions) [![Coverage Status](https://coveralls.io/repos/github/go-pkgz/auth/badge.svg?branch=master)](https://coveralls.io/github/go-pkgz/auth?branch=master) [![godoc](https://godoc.org/github.com/go-pkgz/auth?status.svg)](https://pkg.go.dev/github.com/go-pkgz/auth?tab=doc)
 
-This library provides "social login" with Github, Google, Facebook, Microsoft, Twitter, Yandex, Battle.net, Apple, Patreon and Telegram as well as custom auth providers and email verification.
+This library provides "social login" with Github, Google, Facebook, Microsoft, Twitter, Yandex, Battle.net, Apple, Patreon, Discord, and Telegram as well as custom auth providers and email verification.
 
 - Multiple oauth2 providers can be used at the same time
 - Special `dev` provider allows local testing and development
@@ -535,7 +535,7 @@ See [example](https://github.com/go-pkgz/auth/blob/master/_example/main.go#L83:L
 
 For more details refer to [Yandex OAuth](https://tech.yandex.com/oauth/doc/dg/concepts/about-docpage/) and [Yandex.Passport](https://tech.yandex.com/passport/doc/dg/index-docpage/) API documentation.
 
-##### Battle.net Auth Provider
+#### Battle.net Auth Provider
 
 1. Log into Battle.net as a developer: https://develop.battle.net/nav/login-redirect
 1.  Click "+ CREATE CLIENT" https://develop.battle.net/access/clients/create
@@ -559,6 +559,14 @@ For more details refer to [Complete Guide of Battle.net OAuth API and Login Butt
 1.	Fill **App name**  and **Description** and **URL** of your site
 1.	In the field **Callback URLs** enter the correct url of your callback handler e.g. https://example.mysite.com/{route}/twitter/callback
 1.	Under **Key and tokens** take note of the **Consumer API Key** and **Consumer API Secret key**. Those will be used as `cid` and `csecret`
+
+#### Discord Auth Provider
+
+1.	Create a new Discord application <https://discord.com/developers/applications>
+2.	Fill out **"Name"** and **"Description"** for your site
+3.	Navigate to the **OAuth2** section and add the correct url of your callback handler. For example: <https://example.mysite.com/auth/discord/callback>
+4.	Take note of the **Client ID** and **Client Secret**
+
 ## Status
 
 The library extracted from [remark42](https://github.com/umputun/remark) project. The original code in production use on multiple sites and seems to work fine.

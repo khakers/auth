@@ -62,7 +62,10 @@ func main() {
 				if strings.HasPrefix(claims.User.ID, "microsoft_") { // allow all users with ms auth
 					return true
 				}
-				if strings.HasPrefix(claims.User.ID, "patreon_") { // allow all users with ms auth
+				if strings.HasPrefix(claims.User.ID, "patreon_") { // allow all users with patreon auth
+					return true
+				}
+				if strings.HasPrefix(claims.User.ID, "discord_") { // allow all users with discord auth
 					return true
 				}
 				if strings.HasPrefix(claims.User.Name, "dev_") { // non-guthub allow only dev_* names
@@ -83,6 +86,7 @@ func main() {
 	service.AddProvider("twitter", os.Getenv("AEXMPL_TWITTER_APIKEY"), os.Getenv("AEXMPL_TWITTER_APISEC"))
 	service.AddProvider("microsoft", os.Getenv("AEXMPL_MS_APIKEY"), os.Getenv("AEXMPL_MS_APISEC"))
 	service.AddProvider("patreon", os.Getenv("AEXMPL_PATREON_CID"), os.Getenv("AEXMPL_PATREON_CSEC"))
+	service.AddProvider("discord", os.Getenv("AEXMPL_DISCORD_CID"), os.Getenv("AEXMPL_DISCORD_CSEC"))
 
 	// allow sign with apple id
 	appleCfg := provider.AppleConfig{
@@ -294,7 +298,7 @@ func initGoauth2Srv() *goauth2.Server {
 	err := clientStore.Set("cid", &models.Client{
 		ID:     "cid",
 		Secret: "csecret",
-		Domain: "http://127.0.0.1:8080",
+		Domain: "http://localhost:8080",
 	})
 	if err != nil {
 		log.Printf("failed to set up a client store for go-oauth2/oauth2 server, %s", err)

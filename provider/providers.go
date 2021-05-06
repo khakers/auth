@@ -5,6 +5,8 @@ import (
 	"crypto/sha1" //nolint
 	"encoding/json"
 	"fmt"
+	"strconv"
+
 	"github.com/dghubble/oauth1"
 	"github.com/dghubble/oauth1/twitter"
 	"github.com/go-pkgz/auth/token"
@@ -235,6 +237,39 @@ func NewPatreon(p Params) Oauth2Handler {
 				}
 			}
 
+			return userInfo
+		},
+	})
+}
+
+// NewDiscord makes Discord oauth2 provider
+func NewDiscord(p Params) Oauth2Handler {
+	return initOauth2Handler(p, Oauth2Handler{
+		// https://discord.com/developers/docs/topics/oauth2
+		name: "discord",
+		endpoint: oauth2.Endpoint{
+			AuthURL:   "https://discord.com/api/oauth2/authorize",
+			TokenURL:  "https://discord.com/api/oauth2/token",
+			AuthStyle: oauth2.AuthStyleInParams,
+		},
+		scopes:  []string{"identify"},
+		infoURL: "https://discord.com/api/users/@me",
+		mapUser: func(data UserData, _ []byte) token.User {
+			userInfo := token.User{
+				ID:   "discord_" + token.HashID(sha1.New(), data.Value("id")),
+				Name: data.Value("username"),
+			}
+			if data.Value("avatar") != "" {
+				// format https://cdn.discordapp.com/avatars/{user_id}/{user_avatar}.png
+				userInfo.Picture = fmt.Sprintf("https://cdn.discordapp.com/avatars/%s/%s.png", data.Value("id"), data.Value("avatar"))
+			} else {
+				val, err := strconv.Atoi(data.Value("discriminator"))
+				if err == nil {
+					// format https://cdn.discordapp.com/embed/avatars/{user_discriminator}.png
+					// user_discriminator used in the url is actually the user's discrinator modulo 5
+					userInfo.Picture = fmt.Sprintf("https://cdn.discordapp.com/embed/avatars/%d.png", val%5)
+				}
+			}
 			return userInfo
 		},
 	})
